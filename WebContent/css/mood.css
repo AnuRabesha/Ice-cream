@@ -1,0 +1,447 @@
+/* ── Mood Hero ── */
+.mood-hero {
+  background: linear-gradient(135deg, #7D3C98 0%, #FF6B9D 60%, #FFD700 100%);
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Floating background emojis */
+.mood-hero-bubbles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.mood-hero-bubbles span {
+  position: absolute;
+  font-size: 3rem;
+  opacity: 0.12;
+  animation: floatBubble linear infinite;
+}
+.mood-hero-bubbles span:nth-child(1)  { left:5%;  top:10%; animation-duration:8s;  animation-delay:0s;   font-size:2.5rem; }
+.mood-hero-bubbles span:nth-child(2)  { left:15%; top:70%; animation-duration:10s; animation-delay:1s;   font-size:3.5rem; }
+.mood-hero-bubbles span:nth-child(3)  { left:30%; top:20%; animation-duration:7s;  animation-delay:2s;   font-size:2rem;   }
+.mood-hero-bubbles span:nth-child(4)  { left:50%; top:80%; animation-duration:9s;  animation-delay:0.5s; font-size:4rem;   }
+.mood-hero-bubbles span:nth-child(5)  { left:65%; top:15%; animation-duration:11s; animation-delay:3s;   font-size:2.5rem; }
+.mood-hero-bubbles span:nth-child(6)  { left:75%; top:60%; animation-duration:8s;  animation-delay:1.5s; font-size:3rem;   }
+.mood-hero-bubbles span:nth-child(7)  { left:85%; top:30%; animation-duration:12s; animation-delay:2.5s; font-size:2rem;   }
+.mood-hero-bubbles span:nth-child(8)  { left:92%; top:75%; animation-duration:9s;  animation-delay:4s;   font-size:3.5rem; }
+
+@keyframes floatBubble {
+  0%   { transform: translateY(0) rotate(0deg);   }
+  50%  { transform: translateY(-30px) rotate(10deg); }
+  100% { transform: translateY(0) rotate(0deg);   }
+}
+
+.mood-hero-content { position: relative; z-index: 1; }
+.mood-hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 20px;
+  padding: 0.3rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(4px);
+}
+.mood-hero-content h1 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+.mood-hero-content h1 span {
+  background: rgba(255,255,255,0.25);
+  border-radius: 12px;
+  padding: 0 0.3rem;
+}
+.mood-hero-content p {
+  font-size: 1.05rem;
+  opacity: 0.92;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ── Mood Picker ── */
+.mood-picker-section {
+  background: var(--cream);
+  padding: 3rem 2rem;
+}
+.mood-picker-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.mood-picker-title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--choco);
+  margin-bottom: 2rem;
+}
+
+/* Mood cards grid */
+.mood-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.2rem;
+}
+
+.mood-card {
+  position: relative;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.8rem 1.2rem 1.4rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s;
+  border: 3px solid transparent;
+  overflow: hidden;
+  display: block;
+}
+.mood-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--mood-gradient);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+.mood-card:hover::before,
+.mood-card.selected::before { opacity: 0.12; }
+.mood-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-h);
+  border-color: var(--purple-d);
+}
+.mood-card.selected {
+  border-color: var(--purple-d);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-h);
+}
+.mood-card input[type=radio] { display: none; }
+
+.mood-card-emoji {
+  font-size: 3rem;
+  margin-bottom: 0.7rem;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+.mood-card:hover .mood-card-emoji,
+.mood-card.selected .mood-card-emoji { transform: scale(1.2) rotate(-5deg); }
+
+.mood-card-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--choco);
+  margin-bottom: 0.3rem;
+  position: relative;
+  z-index: 1;
+}
+.mood-card-sub {
+  font-size: 0.72rem;
+  color: var(--gray);
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+}
+
+/* Checkmark on selected */
+.mood-card-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background: var(--purple-d);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 2;
+}
+.mood-card.selected .mood-card-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Results Section ── */
+.mood-results-section {
+  background: var(--white);
+  padding: 3rem 2rem;
+  border-top: 3px solid var(--lavender);
+}
+.mood-results-inner { max-width: 1300px; margin: 0 auto; }
+
+.mood-results-header { text-align: center; margin-bottom: 2.5rem; }
+.mood-results-badge {
+  display: inline-block;
+  color: #fff;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+.mood-results-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--choco);
+  margin-bottom: 0.4rem;
+}
+.mood-results-sub { font-size: 0.95rem; color: var(--gray); }
+
+/* Product grid */
+.mood-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.4rem;
+}
+
+.mood-product-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeSlideUp 0.5s ease both;
+}
+.mood-product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-h);
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mood-product-img {
+  width: 100%;
+  height: 160px;
+  background: linear-gradient(135deg, var(--lavender), var(--pink));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  transition: transform 0.3s ease;
+}
+.mood-product-card:hover .mood-product-img { transform: scale(1.04); }
+
+.mood-bestseller-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--pink-d);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+  z-index: 2;
+}
+
+/* Mood match tags */
+.mood-match-tags {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  z-index: 2;
+}
+.mood-tag {
+  background: rgba(125,60,152,0.85);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 8px;
+  text-transform: capitalize;
+  backdrop-filter: blur(4px);
+}
+
+.mood-product-body { padding: 1rem; }
+.mood-product-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--choco);
+  margin-bottom: 0.3rem;
+}
+.mood-product-desc {
+  font-size: 0.78rem;
+  color: var(--gray);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+.mood-product-shop {
+  font-size: 0.75rem;
+  color: var(--purple-d);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+/* Stock bar */
+.mood-stock-bar {
+  height: 4px;
+  background: #f0e8ff;
+  border-radius: 2px;
+  margin-bottom: 0.3rem;
+  overflow: hidden;
+}
+.mood-stock-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple-d), var(--pink-d));
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.mood-stock-label {
+  font-size: 0.7rem;
+  color: var(--gray);
+  margin-bottom: 0.7rem;
+}
+
+.mood-product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mood-product-price {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--purple-d);
+}
+.mood-product-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+.btn-mood-explore {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--lavender);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-mood-explore:hover { background: var(--purple-d); }
+
+.btn-mood-cart {
+  background: linear-gradient(135deg, var(--purple-d), var(--pink-d));
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 0.38rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.btn-mood-cart:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+/* No results */
+.mood-no-results {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--gray);
+}
+.mood-no-results-icon { font-size: 4rem; margin-bottom: 1rem; }
+.mood-no-results h3 { font-size: 1.3rem; font-weight: 700; color: var(--choco); margin-bottom: 0.5rem; }
+.mood-no-results p  { margin-bottom: 1.5rem; }
+
+/* Explore more */
+.mood-explore-more {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--lavender);
+  color: var(--gray);
+  font-size: 0.95rem;
+}
+
+/* ── How It Works ── */
+.mood-how-section {
+  background: var(--cream);
+  padding: 4rem 2rem;
+}
+.mood-how-inner { max-width: 900px; margin: 0 auto; }
+.mood-how-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.mood-how-step {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  flex: 1;
+  min-width: 200px;
+  max-width: 240px;
+  position: relative;
+}
+.how-step-num {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--purple-d);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.82rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.how-step-icon  { font-size: 2.5rem; margin-bottom: 0.6rem; }
+.how-step-title { font-size: 0.95rem; font-weight: 800; color: var(--choco); margin-bottom: 0.4rem; }
+.how-step-desc  { font-size: 0.8rem; color: var(--gray); line-height: 1.5; }
+.mood-how-arrow { font-size: 1.8rem; color: var(--lavender); font-weight: 800; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .mood-hero-content h1 { font-size: 2.2rem; }
+  .mood-cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .mood-products-grid { grid-template-columns: repeat(2, 1fr); }
+  .mood-how-steps { flex-direction: column; align-items: center; }
+  .mood-how-arrow { transform: rotate(90deg); }
+}
+@media (max-width: 480px) {
+  .mood-cards-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+  .mood-products-grid { grid-template-columns: 1fr; }
+  .mood-card { padding: 1.2rem 0.8rem; }
+  .mood-card-emoji { font-size: 2.2rem; }
+  .mood-card-title { font-size: 0.82rem; }
+  .mood-card-sub { display: none; }
+}
